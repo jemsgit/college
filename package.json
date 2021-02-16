@@ -4,7 +4,6 @@
     "description": "",
     "main": "src/index.js",
     "scripts": {
-        "test": "editorconfig-checker --exclude '.git|node_modules|.DS_Store'",
         "build": "webpack --mode production --config webpack.production.js",
         "start-dev": "webpack-dev-server --mode development --hot --config webpack.dev.js --progress",
         "start": "node server/server.js"

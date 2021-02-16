@@ -39,7 +39,7 @@ module.exports = (env = {}) => {
         }),
         new CopyPlugin({
           patterns: [
-              //{ from: 'icons', to: path.resolve(__dirname, 'dist', 'icons') },
+              { from: 'icons', to: path.resolve(__dirname, 'dist') },
               { from: path.resolve(__dirname, 'manifest.json'), to: path.resolve(__dirname, 'dist') },
               { from: path.resolve(__dirname, 'sw.js'), to: path.resolve(__dirname, 'dist') }
           ]
