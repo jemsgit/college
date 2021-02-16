@@ -1,0 +1,33 @@
+.exam {
+  &__filter {
+    margin-top: 30px;
+    margin-bottom: 20px;
+  }
+
+  &__filter-search {
+    height: 25px;
+    width: 100%;
+    font-size: 22px;
+    color: #5a5a5a;
+    border: none;
+    border-bottom: 1px #b5b2b2 solid;
+    outline: none;
+
+    &::placeholder {
+      color: #0e0e0e7a;
+    }
+  }
+
+  &__item {
+    display: block;
+    margin-top: 15px;
+    color: #000000ad;
+    font-size: 1.2rem;
+    white-space: break-spaces;
+  }
+
+  &__item-link {
+    display: block;
+    margin-bottom: 5px;
+  }
+}

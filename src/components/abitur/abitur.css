@@ -1,0 +1,39 @@
+.abitur {
+  &__docs {
+    font-size: 18px;
+    white-space: pre-line;
+
+    a {
+      display: inline-block;
+      margin-top: 10px;
+    }
+  }
+
+  &__comission {
+    font-size: 18px;
+    white-space: pre-line;
+  }
+
+  &__info-item {
+    display: block;
+    text-decoration: none;
+    background-color: #d8d8d829;
+    border: 1px #ffd9d9 solid;
+    padding: 10px;
+    margin: 5px 0;
+    cursor: pointer;
+    border-radius: 3px;
+    font-size: 1rem;
+    font-family: sans-serif;
+    color: #5d5d5d;
+
+    a {
+      text-decoration: none;
+      color: #5d5d5d;
+
+      &:visited {
+        color: #5d5d5d;
+      }
+    }
+  }
+}
