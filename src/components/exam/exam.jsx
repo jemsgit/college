@@ -6,23 +6,23 @@ import './exam.css';
 
 export default function Exam(props) {
   const { state: { exams = [] } } = props;
-  let cn = createCn('exam');
+  let cn = createCn('exam'); //генерируем класс .exam,  все последующие вызовы cn('class') будут возвращать .exam__class
 
-  const [filter, setFilter] = useState('');
+  const [filter, setFilter] = useState('');// filter = '' - изначально пустой. функция setFilter будет задавать фильтр и обновлять компонент после этого
 
-  const handleFilterChange = useCallback((e) => {
+  const handleFilterChange = useCallback((e) => { //создем функцию обработчик на изменения значений инпута с фильтром
     setFilter(e.target.value);
-  }, [setFilter])
+  }, [setFilter]) //функция изменяется при изменении setFilter
 
-  const renderExams = useMemo(() => {
+  const renderExams = useMemo(() => { //фильтруем инф об экзаменах
     if (!filter) {
       return exams;
     }
     const lowerFilter = filter.toLowerCase();
     let newExams = [];
-    exams.forEach((group) => {
-      let items = group.items.filter(({title}) => title.toLowerCase().includes(lowerFilter));
-      if(items.length) {
+    exams.forEach((group) => { //бежим по группа предметов
+      let items = group.items.filter(({title}) => title.toLowerCase().includes(lowerFilter)); //в группах фильтруем значения списка предметов
+      if(items.length) { //если после фильтрации есть значения, то добавляем группу в результирующую выборку со сзначениями, которые подходят по фильтру
         newExams.push({
           group: group.group,
           items
@@ -30,7 +30,7 @@ export default function Exam(props) {
       }
     })
     return newExams;
-  }, [filter, exams]);
+  }, [filter, exams]); //функция изменяется при изменении filter и exams
 
   return (
     <div class={cn()}>

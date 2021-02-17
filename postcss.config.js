@@ -4,3 +4,4 @@ module.exports = {
         require('postcss-nested')()
     ]
 };
+//конфиг для postcss (позволяет делать вложенность в css)

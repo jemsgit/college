@@ -2,21 +2,19 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import App from "./components/app/app";
 
+//здесь стартует React приложение
 ReactDOM.render( React.createElement(App), document.querySelector("#root"));
 
+//если у браузера есть возможность исполнени сервис воркеров, то подключаем sw.js (для работы офлайн и работы Progressive Web App)
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js').then(registration => {
+        navigator.serviceWorker.register('/sw.js').then(registration => { //после загрузки регистрируем сервис воркер sw.js
             console.log('SW registered: ', registration);
         }).catch(registrationError => {
             console.log('SW registration failed: ', registrationError);
         });
 
-        navigator.serviceWorker.ready.then(function(registration) {
-            subscribe(registration);
-            window.addEventListener('online', () => {
-                registration.sync.register('hasConnection')
-            });
+        navigator.serviceWorker.ready.then(function() {
             console.log('Service Worker Ready')
             return;
         }).then(function() {
@@ -27,14 +25,4 @@ if ('serviceWorker' in navigator) {
             console.log('sync registration failed')
         });
     });
-
-}
-
-function subscribe(sw) {
-    sw.pushManager.subscribe({
-        userVisibleOnly: true,
-        applicationServerKey: 'BCc7N6Qoqse7bvzDyjtEUgesACmMqyckaTUFewgD8sK4DtzJkf56H17v9OF64ludMNZTWAqnd_zaCjImEh8t3CY'
-    }).then((res) => {
-        console.log(JSON.stringify(res))
-    })
 }

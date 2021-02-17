@@ -25,8 +25,8 @@ async function getConferenceInfo() { //информация по доступа�
   data.each(function() { //бежим по выбранным элементам и выбираем имя преподователя и данные по конферен-комнатам
     let el = $(this);
     let name = el.find($('tr:first-child')).text().trim();
-    let data = el.find($('tr:nth-child(2)')).text().trim().replace(/Ссылка на .*/g, '');
-    let link = el.find($('a')).attr('href');
+    let data = el.find($('tr:nth-child(2)')).text().trim().replace(/Ссылка на .*/g, ''); //удаляем из текста часть с ссылкой
+    let link = el.find($('a')).attr('href'); //получаем ссылку
     conferencies.push({
       name,
       data,
@@ -46,7 +46,7 @@ async function getEntranceInfo() { //информация о поступлен�
   let time = $('.gdl-page-content div').text().trim(); // получем время работы комиссии
   let doc = $('.gdl-page-content a') //получаем список ссылок и ищем ссылку с текстом начинающимся на "Заявление для"
     .filter(function () {
-      return $(this).text().includes('Заявление для ');
+      return $(this).text().includes('Заявление для '); //находим текст где есть заявление
     })
     .first();
   let link = doc.attr('href'); //ссылка на заявление

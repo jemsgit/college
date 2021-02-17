@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { createCn } from 'bem-react-classname';
 import BackButton from '../back-button/backButton';
 
@@ -7,20 +6,20 @@ import config from '../../config';
 
 import './abitur.css';
 
-function parseStateData(entranceInfo) {
+function parseStateData(entranceInfo) {//парсим инфу о поступлении
   let countInfoLink;
   let docs;
   let comissionTimeWork;
   let blankLink;
   let blankTitle; 
-  if(entranceInfo) {
+  if (entranceInfo) {
     let info;
     ({countInfoLink, docs, info} = entranceInfo);
-    if(info) {
+    if (info) {
       let doc;
-      ({time: comissionTimeWork, doc} = info);
-      if(doc) {
-        ({link: blankLink, title: blankTitle} = doc)
+      ({ time: comissionTimeWork, doc } = info);
+      if (doc) {
+        ({ link: blankLink, title: blankTitle } = doc);
       }
     }
   };
@@ -34,9 +33,9 @@ function parseStateData(entranceInfo) {
 }
 
 export default function Abitur(props) {
-  let { state: { entranceInfo, paymentInfoUrl } } = props;
+  let { state: { entranceInfo, paymentInfoUrl } } = props; //выдергиваем нужные данные из props
   let data = parseStateData(entranceInfo);
-  const cn = createCn('abitur')
+  const cn = createCn('abitur'); //генерируем класс .abitur, все последующие вызовы cn('class') будут возвращать .abitur__class
   return (
     <div className={ cn() }>
       <h2>Информация для абитуриентов</h2>

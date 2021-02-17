@@ -4,8 +4,8 @@ let config = require('./config');
 
 let { entranceInfoUrl, paymentInfoUrl, libraryUrl } = config; //ссылки на инфу цифры приема, платежах и бибилиотеку
 
-const entranceDocsFileName = 'entrance';
-const reminderFileName = 'reminder';
+const entranceDocsFileName = 'entrance'; //имя файла для инфы о поступлении
+const reminderFileName = 'reminder'; //имя файла для памятки
 
 let store = {
   entranceInfo: null,
@@ -16,16 +16,16 @@ let store = {
   news: [],
   paymentInfoUrl,
   libraryUrl,
-}
+} //изначальный Store приложения
 
 
-async function processNewData(newStore){
+async function processNewData(newStore){ // обрабатываем данные с сайта чтобы сохранить их в приложении
   if(!newStore) {
     return;
   }
 
-  let entranceFile = await saveTextAsFile(newStore.entranceDocs, entranceDocsFileName);
-  let reminderFile = await saveTextAsFile(newStore.reminder, reminderFileName);
+  let entranceFile = await saveTextAsFile(newStore.entranceDocs, entranceDocsFileName); //сохраняем инфу о поступлении в файл
+  let reminderFile = await saveTextAsFile(newStore.reminder, reminderFileName); //сохраняем памятку студента в файл
 
   store = {
     ...store,
@@ -47,30 +47,28 @@ async function processNewData(newStore){
   }
 }
 
-function saveTextAsFile(text, fileName) {
-  return new Promise((res, rej) => {
-    let file = path.resolve(__dirname, 'files', fileName + '.txt');
-    console.log(file);
+function saveTextAsFile(text, fileName) { //сохранение файла с текстом
+  return new Promise((res, rej) => { //оборачиваем в промис
+    let file = path.resolve(__dirname, 'files', fileName + '.txt'); //получаем путь к файлу
     fs.writeFile(file, text, (err) => {
-      if(err) {
+      if(err) { //если ошибка при сохранении
         console.log('cant write file');
-        rej()
+        rej();
       }
-      res(file)
+      res(file); //возвращаем результат сохранения файла - путь
     })
   })
 }
 
 function getData() {
-  return store;
+  return store; // все данные приложения
 }
 
-function getEntrance() {
-  
+function getEntrance() { //получение файла с инфой о поступлении
   return store.entranceInfo ? store.entranceInfo.file : undefined;
 }
 
-function getReminder() {
+function getReminder() { //получение файла с памяткой студента
   return store.studentReminder ? store.studentReminder.file : undefined;
 }
 

@@ -6,13 +6,13 @@ const CopyPlugin = require('copy-webpack-plugin');
 module.exports = () => {
   return {
       devtool: 'inline-eval-source-map',
-      entry: ['babel-polyfill', './src/index.js'],
+      entry: ['babel-polyfill', './src/index.js'], // точки входа
       output: {
-          path: path.join(__dirname, "/dist"),
+          path: path.join(__dirname, "/dist"), // пишем в папку dist
           filename: "index_bundle.js"
       },
       stats: 'errors-warnings',
-      module: {
+      module: { //правила для типов файлов
           rules: [{
                   test: /\.(js|ts)x?$/,
                   use: [require.resolve('babel-loader')],
@@ -35,10 +35,10 @@ module.exports = () => {
           extensions: ['.js', '.jsx']
       },
       plugins: [
-          new HtmlWebpackPlugin({
+          new HtmlWebpackPlugin({ //добавляем скрипты и стили в html
               template: "./src/index.html"
           }),
-          new CopyPlugin({
+          new CopyPlugin({ //копируем файлы иконок, манифест и сервис воркер
               patterns: [
                   { from: 'icons', to: path.resolve(__dirname, 'dist', 'icons') },
                   { from: path.resolve(__dirname, 'manifest.json'), to: path.resolve(__dirname, 'dist') },
@@ -46,7 +46,7 @@ module.exports = () => {
               ]
           })
       ],
-      devServer: {
+      devServer: { //при локальной разработке используем dev server вебпака
           contentBase: path.join(__dirname, 'dist'),
           compress: true,
           port: 8080,

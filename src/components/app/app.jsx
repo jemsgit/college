@@ -7,6 +7,7 @@ import {
 
 import { fetchData } from '../../fetcher'
 
+//все компоненты приложения
 import Main from '../main/main';
 import Abitur from '../abitur/abitur';
 import Student from '../student/student';
@@ -23,13 +24,16 @@ export default class App extends Component {
     }
 
     componentDidMount() {
+      //загружаем данные
       fetchData().then((data) => {
         if(data) {
+          //обновляем стейт компонента, из state будут прокидываться данные в другие компоненты через props
           this.setState(data);
         }
       })
     }
 
+    //роутинг приложения
     render() {
       return (<div className='app'>
         <Router>
@@ -52,7 +56,6 @@ export default class App extends Component {
             <Route path="/" exact={ true }>
               <Main news={this.state.news}/>
             </Route>
-
         </Switch>
       </Router></div>);
     }
