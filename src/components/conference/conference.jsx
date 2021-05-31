@@ -14,7 +14,7 @@ export default function Conference(props) {
 
   const handleFilterChange = useCallback((e) => { //создем функцию обработчик на изменения значений инпута с фильтром
     setFilter(e.target.value);
-  }, [setFilter])
+  }, [setFilter]) //функция изменяется при изменении setFilter
 
   const renderConference = useMemo(() => { //useMemo мемоизирует вычисления информации о конференс комнатах. Если пришли те же самые значения фунция вернет старое значение и не будет выполняться
     if (!filter) {

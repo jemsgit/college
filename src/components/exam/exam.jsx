@@ -14,7 +14,7 @@ export default function Exam(props) {
     setFilter(e.target.value);
   }, [setFilter]) //функция изменяется при изменении setFilter
 
-  const renderExams = useMemo(() => { //фильтруем инф об экзаменах
+  const renderExams = useMemo(() => { //фильтруем инфу об экзаменах (используя мемоизированные значения)
     if (!filter) {
       return exams;
     }

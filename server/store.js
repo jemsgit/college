@@ -2,6 +2,10 @@ let fs = require('fs');
 let path = require('path');
 let config = require('./config');
 
+let News = require('./db/models/news')
+let Conference = require('./db/models/conference')
+let Exam = require('./db/models/exam')
+
 let { entranceInfoUrl, paymentInfoUrl, libraryUrl } = config; //ссылки на инфу цифры приема, платежах и бибилиотеку
 
 const entranceDocsFileName = 'entrance'; //имя файла для инфы о поступлении
@@ -72,9 +76,26 @@ function getReminder() { //получение файла с памяткой с�
   return store.studentReminder ? store.studentReminder.file : undefined;
 }
 
+async function loadDataFormDb() {
+  let news = await News.findAll({raw: true}); //получаем новости из БД
+  let conferences = await Conference.findAll({raw: true}); //получаем конференции из БД
+  let exams = await Exam.findAll({raw: true}); //получаем экзамены из БД
+  exams.forEach(exam => {
+    exam.items = JSON.parse(exam.items); //переводим инфу по экзаменам для группы из JSON и обычный JS объект
+  });
+  store = {
+    ...store,
+    news,
+    conferenceInfo: conferences,
+    exams
+  }
+  return store;
+}
+
 module.exports = {
   processNewData,
   getData,
   getEntrance,
-  getReminder
+  getReminder,
+  loadDataFormDb
 }

@@ -2,6 +2,10 @@ const cheerio = require('cheerio');
 const axios = require('axios');
 const config = require('./config');
 
+const Exam = require('./db/models/exam');
+const Conference = require('./db/models/conference');
+const News = require('./db/models/news');
+
 async function getPage(url) {
   let resp;
 
@@ -22,7 +26,7 @@ async function getConferenceInfo() { //информация по доступа�
   const $ = cheerio.load(content); // оборачиваем в cherio чтобы можно было по селектору выбирать элементы страницы
   let data = $('.gdl-page-content table'); //выбираем данные по селектору
   let conferencies = [];
-  data.each(function() { //бежим по выбранным элементам и выбираем имя преподователя и данные по конферен-комнатам
+  data.each(async function() { //бежим по выбранным элементам и выбираем имя преподователя и данные по конферен-комнатам
     let el = $(this);
     let name = el.find($('tr:first-child')).text().trim();
     let data = el.find($('tr:nth-child(2)')).text().trim().replace(/Ссылка на .*/g, ''); //удаляем из текста часть с ссылкой
@@ -31,7 +35,15 @@ async function getConferenceInfo() { //информация по доступа�
       name,
       data,
       link
-    })
+    });
+    let conf = await Conference.findOne({where: { name: name }}); // смотрим, есть ли объект где поле name === текущему name
+    if(!conf) { // если нет, добавляем в базу
+      Conference.create({
+        name,
+        data,
+        link
+      });
+    }
   });
   return conferencies;
 }
@@ -108,11 +120,18 @@ async function getExam() { //информация по экзаменам
       link
     });
   });
-  Object.keys(groups).forEach(key => {
+  Object.keys(groups).forEach(async (key) => {
     examGroups.push({
       group: key,
       items: groups[key]
     });
+    let exam = await Exam.findOne({where: { group: key }}); //смотрим если есть ли объект с group === key в базе
+    if(!exam) { // если нет, добавляем в базу
+      Exam.create({
+        group: key,
+        items: JSON.stringify(groups[key])
+      })
+    }
   });
   return examGroups;
 }
@@ -154,7 +173,7 @@ async function getNews() { //последние новости
   const $ = cheerio.load(content);
   let news = $('.blog-item2'); //список новостей
   let newsContent = []
-  news.each(function() {
+  news.each(async function() {
     let el = $(this);
     let title = el.find('.blog-thumbnail-title').first().text(); //получаем заголовок
     let link = el.find('.blog-thumbnail-title a').first().attr('href'); //ссылку
@@ -166,6 +185,16 @@ async function getNews() { //последние новости
       imageUrl,
       text
     })
+
+    let news = await News.findOne({where: { link: link }}); //смотрим если есть ли объект с link === link в базе
+    if(!news) { // если нет, добавляем новость
+      News.create({
+        title,
+        link,
+        imageUrl,
+        text
+      })
+    }
   })
   return newsContent;
 }

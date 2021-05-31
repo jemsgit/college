@@ -4,6 +4,7 @@ const cors = require('cors')
 const scheduler = require('./scheduler');
 const scraper = require('./scraper');
 const store = require('./store');
+require('./db/models/index');
 
 const port = 3000;
 
@@ -11,6 +12,8 @@ async function scrapData() {
   let fullData = await scraper.getFullData(); //получаем данные
   await store.processNewData(fullData); //сохраняем в стейт приложения
 }
+
+store.loadDataFormDb(); // загружаем часть данных в стейт приложения из базы данных
 
 scrapData(); // получаем информацию с сайта при запуске
 scheduler('00 23 * * *', async function() {  //потом каждый день в 23 00 запускаем функцию получения информации с сайта
@@ -39,8 +42,6 @@ app.get('*', (req,res) =>{
 });
 
 
-
 app.listen(port, () => { //запускаем сервер
   console.log(`App listening at http://localhost:${port}`)
 })
-
